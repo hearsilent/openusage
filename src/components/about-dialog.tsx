@@ -1,5 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { openUrl } from "@tauri-apps/plugin-opener";
+import { ChangelogDialog } from "./changelog-dialog";
+import { Button } from "@/components/ui/button";
 
 interface AboutDialogProps {
   version: string;
@@ -29,6 +31,8 @@ function ExternalLink({
 }
 
 export function AboutDialog({ version, onClose }: AboutDialogProps) {
+  const [view, setView] = useState<"about" | "changelog">("about");
+
   // Close on ESC key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -59,6 +63,10 @@ export function AboutDialog({ version, onClose }: AboutDialogProps) {
     }
   };
 
+  if (view === "changelog") {
+    return <ChangelogDialog currentVersion={version} onBack={() => setView("about")} onClose={onClose} />;
+  }
+
   return (
     <div
       className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-xl"
@@ -73,9 +81,19 @@ export function AboutDialog({ version, onClose }: AboutDialogProps) {
 
         <h2 className="text-xl font-semibold mb-1">OpenUsage</h2>
 
-        <span className="inline-block text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full mb-4">
-          v{version}
-        </span>
+        <div className="flex flex-col items-center gap-2 mb-4">
+          <span className="inline-block text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+            v{version}
+          </span>
+          <Button
+            size="xs"
+            variant="outline"
+            onClick={() => setView("changelog")}
+            className="text-[10px] h-5 px-1.5"
+          >
+            View Changelog
+          </Button>
+        </div>
 
         <div className="text-sm text-muted-foreground space-y-1">
           <p>
@@ -103,3 +121,4 @@ export function AboutDialog({ version, onClose }: AboutDialogProps) {
     </div>
   );
 }
+
