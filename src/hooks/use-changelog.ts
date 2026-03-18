@@ -3,9 +3,9 @@ import { useState, useEffect } from "react"
 export interface Release {
   id: number
   tag_name: string
-  name: string
-  body: string
-  published_at: string
+  name: string | null
+  body: string | null
+  published_at: string | null
   html_url: string
 }
 

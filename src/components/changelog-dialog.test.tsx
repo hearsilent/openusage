@@ -151,6 +151,30 @@ describe("ChangelogDialog", () => {
     expect(screen.getByText("v1.0.0")).toBeInTheDocument()
   })
 
+  it("handles null published_at gracefully", () => {
+    changelogState.releases = [
+      {
+        id: 1,
+        tag_name: "v1.0.1",
+        name: "v1.0.1",
+        body: "body",
+        published_at: null,
+        html_url: "https://github.com/robinebers/openusage/releases/tag/v1.0.1",
+      },
+    ]
+
+    render(
+      <ChangelogDialog
+        currentVersion="1.0.1"
+        onBack={() => {}}
+        onClose={() => {}}
+      />,
+    )
+
+    expect(screen.getByText("v1.0.1")).toBeInTheDocument()
+    expect(screen.getByText("Unpublished release")).toBeInTheDocument()
+  })
+
   it("shows link to full changelog when multiple releases exist", async () => {
     changelogState.releases = [
       {
