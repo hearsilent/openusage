@@ -68,7 +68,7 @@ describe("ChangelogDialog", () => {
       "## Heading\n" +
       "- item\n" +
       "PR #123 by @user in commit abcdef1\n" +
-      "See [docs](https://example.com/docs)"
+      "See [docs](https://example.com/docs) and https://example.com/plain"
 
     changelogState.releases = [
       {
@@ -125,6 +125,11 @@ describe("ChangelogDialog", () => {
     expect(openerState.openUrlMock).toHaveBeenCalledWith(
       "https://github.com/robinebers/openusage/commit/abcdef1",
     )
+
+    openerState.openUrlMock.mockClear()
+
+    await userEvent.click(screen.getByRole("button", { name: "https://example.com/plain" }))
+    expect(openerState.openUrlMock).toHaveBeenCalledWith("https://example.com/plain")
   })
 
   it("handles null body without crashing", () => {

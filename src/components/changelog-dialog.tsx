@@ -25,6 +25,8 @@ function SimpleMarkdown({ content }: { content: string }) {
     { type: "user", regex: /(@[\w-]+)/g },
     // Commit hashes: 7 chars hex
     { type: "commit", regex: /\b([a-f0-9]{7})\b/g },
+    // Plain URLs: https://...
+    { type: "url", regex: /(https?:\/\/[^\s<]+)/g },
   ];
 
   const renderText = (text: string): React.ReactNode => {
@@ -66,6 +68,8 @@ function SimpleMarkdown({ content }: { content: string }) {
             } else {
               newParts.push({ type: "text", content: match[1] });
             }
+          } else if (pattern.type === "url") {
+            newParts.push({ type: "link", content: match[1], url: match[1] });
           }
 
           lastIndex = regex.lastIndex;
