@@ -223,9 +223,13 @@ export function ChangelogDialog({ currentVersion, onBack, onClose }: ChangelogDi
                 <div>
                   <h3 className="font-bold text-lg">{currentRelease.name || currentRelease.tag_name}</h3>
                   <p className="text-[10px] text-muted-foreground mt-0.5">
-                    Released on {(() => {
-                      const d = new Date(currentRelease.published_at);
-                      return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
+                    Released on{" "}
+                    {(() => {
+                      const d = new Date(currentRelease.published_at)
+                      const year = d.getUTCFullYear()
+                      const month = String(d.getUTCMonth() + 1).padStart(2, "0")
+                      const day = String(d.getUTCDate()).padStart(2, "0")
+                      return `${year}/${month}/${day}`
                     })()}
                   </p>
                 </div>
